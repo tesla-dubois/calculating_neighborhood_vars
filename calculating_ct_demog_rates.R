@@ -56,4 +56,6 @@ acs_data <- data[myvars]
 rm(i, items, myvars, states, year, data)
 
 # TO DO:
-# - Generate a new codebook for my output data.
+# - Generate a new data dictionary for my output data.
+
+### HERE ARE SOME CHANGES (TESTING GITHUB DESKTOP CONNECTION)
