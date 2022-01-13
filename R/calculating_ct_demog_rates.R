@@ -4,7 +4,7 @@ library(tidyr)
 library(purrr)
 
 # GET VARIABLES
-vars <- load_variables(2019, "acs5", cache = TRUE)
+acs_vars <- load_variables(2019, "acs5", cache = TRUE)
 # View(vars)
 
 # VARIABLE NAMES
@@ -12,12 +12,12 @@ var_names <- c("below_pov", "pop_pov", "NHBlack", "NHAsian", "pop_race", "Hispan
 
 var_codes <- c("B17020_002", "B17020_001", "B03002_004", "B03002_006", "B03002_001", "B03002_012", "B25002_001", "B25002_002", "B25003_003", "B19013_001", "B05002_013", "B05002_001", "B16010_002", "B16010_001", "B23025_003", "B23025_004", "B08006_008", "B08006_001", paste0("B07001_00", 1:2), paste0("B07001_0", 17:18))
 
-codebook <-
+code_df <-
   tibble(
     name = var_codes,
     short_desc = var_names
   ) |>
-  inner_join(vars) |>
+  inner_join(acs_vars) |>
   print()
 
 
@@ -26,7 +26,7 @@ acs_data <- NULL
 
 year <- c(2018, 2019)
 states <- c("PA", "NJ")
-items <- set_names(codebook$name, codebook$short_desc)
+items <- set_names(code_df$name, code_df$short_desc)
 
 for (i in year) {
   res <- get_acs(
@@ -45,16 +45,17 @@ for (i in year) {
 }
 
 
+# do transformation at the end
 acs_data |>
-  transmute(
+  transmute( # mutate and select at the same time
     GEOID,
     NAME,
     year,
     prc_pov = below_pov / pop_pov,
-    across(
+    across( # .cols becomes .x in the function ~(.x ...)
       .cols = c(NHBlack, NHAsian, HispanicAn, Birth_foreign),
       .fns = ~(.x / pop_race), # pop_race is the same as pop_total
-      .names = "prc_{.col}"
+      .names = "prc_{.col}" # append "prc_" to the front of each variable used
     ),
     prc_educ_ltHS = Educ_ltHS / pop_ed,
     prc_employed = employed / pop_labor,
@@ -64,7 +65,7 @@ acs_data |>
       (samhous_grp1 - samhous_grp2) / ( samhous_pop_grp_1 - samhous_pop_grp_2),
     hh_income
    ) |>
-  mutate(
+  mutate(# round em all
     across(
       .cols = starts_with("prc"),
       .fns = ~round(.x * 100, 2))
