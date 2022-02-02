@@ -5,15 +5,12 @@ library(purrr)
 
 # GET VARIABLES
 vars <- load_variables(2019, "acs5", cache = TRUE)
+
 # View(vars)
 
 # VARIABLE NAMES
 var_names <- c("below_pov_indv", "below_pov_indv_pop", "deep_pov_house", "deep_pov_denom")
-var_codes <- c("B17020_002EA", "B17020_001EA", "B17026_002EA", "B17026_001EA")
-
-
-# var_names <- c("below_pov_indv", "below_pov_indv_pop")
-# var_codes <- c("B17020_002", "B17020_001")
+var_codes <- c("B17001_002", "B17001_001", "C17002_002", "C17002_001")
 
 
 codebook <-
@@ -31,7 +28,7 @@ year <- c(2009, 2014, 2019)
 states <- c("PA")
 items <- set_names(var_codes, var_names)
 items
- for (i in year) {
+for (i in year) {
 # i <- 2020
   res <- get_acs(
     geography = "tract", survey = "acs5", variables = items,
