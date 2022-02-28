@@ -45,7 +45,7 @@ for (i in year) {
 }
 
 
-acs_data |>
+acs_data <- acs_data |>
   transmute(
     GEOID,
     NAME,
