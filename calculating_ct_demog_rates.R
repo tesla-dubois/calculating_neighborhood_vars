@@ -25,15 +25,16 @@ codebook <-
 # PULLING 5-YEAR ACS ESTIMATES IN ENDING IN YEARS DEFINED BELOW.
 acs_data <- NULL
 
-year <- c(2019)
-states <- c("PA")
+year <- c(2015, 2019)
+# states <- c("PA")
 # county <- "Philadelphia"
 items <- set_names(codebook$name, codebook$short_desc)
 
 for (i in year) {
   res <- get_acs(
     geography = "zcta", survey = "acs5", variables = items,
-    state = states, year = i, key = census_key
+    # state = states, couny = county, year = i, key = census_key
+    year = i, key = census_key
   )
 
   temp <-
