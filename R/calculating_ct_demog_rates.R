@@ -75,3 +75,4 @@ acs_data <- acs_data |>
   mutate(qr_samehouse = create_qgroups(prc_same_house, groups = 5, strata = state),
          qr_foreign = create_qgroups(prc_foreign_born, groups = 5, strata = state),
          qr_trans_car = create_qgroups(prc_trans_car, groups = 5, strata = state))
+
