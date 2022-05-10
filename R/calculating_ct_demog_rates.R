@@ -21,7 +21,7 @@ codebook <-
   inner_join(vars) |>
   print()
 
-
+write.csv(codebook, "required_vars.csv")
 # PULLING 5-YEAR ACS ESTIMATES IN ENDING IN YEARS DEFINED BELOW.
 acs_data <- NULL
 
